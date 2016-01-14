@@ -72,11 +72,11 @@ public class HelloWorld extends PApplet
 		// There are several providers built-in.
 		// Note if you are working offline you must use the MBTilesMapProvider
 		map1 = new UnfoldingMap(this, 50, 50, 350, 500, provider1);
-
+		
 		// The next line zooms in and centers the map at 
 	    // 32.9 (latitude) and -117.2 (longitude)
 	    map1.zoomAndPanTo(zoomLevel, new Location(32.9f, -117.2f));
-		
+	    
 		// This line makes the map interactive
 		MapUtils.createDefaultEventDispatcher(this, map1);
 		
