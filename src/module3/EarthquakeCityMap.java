@@ -2,6 +2,7 @@ package module3;
 
 //Java utilities libraries
 import java.util.ArrayList;
+import java.util.Arrays;
 //import java.util.Collections;
 //import java.util.Comparator;
 import java.util.List;
@@ -72,6 +73,9 @@ public class EarthquakeCityMap extends PApplet {
 	    //Use provided parser to collect properties for each earthquake
 	    //PointFeatures have a getLocation method
 	    List<PointFeature> earthquakes = ParseFeed.parseEarthquake(this, earthquakesURL);
+
+	    markers = getMarkers(earthquakes);
+	    //markers = MapUtils.createSimpleMarkers(earthquakes);
 	    
 	    // These print statements show you (1) all of the relevant properties 
 	    // in the features, and (2) how to get one property and use it
@@ -88,8 +92,23 @@ public class EarthquakeCityMap extends PApplet {
 	    int yellow = color(255, 255, 0);
 	    
 	    //TODO: Add code here as appropriate
+	    map.addMarkers(markers);
 	}
 		
+	private List<Marker> getMarkers(List<PointFeature> earthquakes) {
+		// TODO Auto-generated method stub
+		System.out.println("Step 1");
+		List<Marker> retval = new ArrayList<> ();
+		
+		for (PointFeature feature : earthquakes) {
+			SimplePointMarker marker = this.createMarker(feature);
+			marker.setRadius(10);
+			System.out.println("Step 2");
+			retval.add(marker);
+		}
+		return retval;
+	}
+
 	// A suggested helper method that takes in an earthquake feature and 
 	// returns a SimplePointMarker for that earthquake
 	// TODO: Implement this method and call it from setUp, if it helps
