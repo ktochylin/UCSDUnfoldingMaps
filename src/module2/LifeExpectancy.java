@@ -32,8 +32,28 @@ public class LifeExpectancy extends PApplet {
 		// Load Countries and Markers
 		countries = GeoJSONReader.loadData(this, "D:/Eclipse/Workspace/UCSDUnfoldingMaps/data/countries.geo.json");
 		countryMarkers = MapUtils.createSimpleMarkers(countries);
+		
+		map.addMarkers(countryMarkers);
+		shadeCountries();
 	}
 	
+	private void shadeCountries() {
+		// TODO Auto-generated method stub
+		for (Marker marker: countryMarkers) {
+			String cointryId = marker.getId();
+			
+			
+			if (lifeExpByCountry.containsKey(cointryId)) {
+				float lifeExp = lifeExpByCountry.get(cointryId);
+				int colorLevel = (int) map (lifeExp, 40, 90, 10, 255);
+				marker.setColor(color(255-colorLevel, 100, colorLevel));
+			} else {
+				marker.setColor(color(150, 150, 150));
+			}
+			
+		}
+	}
+
 	private Map<String, Float> loadLifeExpectancyFromCSV(String fileName) {
 		// TODO Auto-generated method stub
 		Map<String, Float> lifeExpMap = new HashMap<String, Float> ();
