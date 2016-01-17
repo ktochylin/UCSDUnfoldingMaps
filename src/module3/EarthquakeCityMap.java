@@ -48,8 +48,9 @@ public class EarthquakeCityMap extends PApplet {
 	private UnfoldingMap map;
 	
 	//feed with magnitude 2.5+ Earthquakes
-	private String earthquakesURL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.atom";
-
+	private String earthquakesURL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.atom"; 
+	
+	//private String earthquakesURL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.atom";
 	
 	public void setup() {
 		size(950, 600, OPENGL);
@@ -79,17 +80,18 @@ public class EarthquakeCityMap extends PApplet {
 	    
 	    // These print statements show you (1) all of the relevant properties 
 	    // in the features, and (2) how to get one property and use it
+	    /*
 	    if (earthquakes.size() > 0) {
 	    	PointFeature f = earthquakes.get(0);
 	    	System.out.println(f.getProperties());
 	    	Object magObj = f.getProperty("magnitude");
 	    	float mag = Float.parseFloat(magObj.toString());
 	    	// PointFeatures also have a getLocation method
-	    }
+	    }*/
 	    
 	    // Here is an example of how to use Processing's color method to generate 
 	    // an int that represents the color yellow.  
-	    int yellow = color(255, 255, 0);
+	    //int yellow = color(255, 255, 0);
 	    
 	    //TODO: Add code here as appropriate
 	    map.addMarkers(markers);
@@ -100,10 +102,36 @@ public class EarthquakeCityMap extends PApplet {
 		System.out.println("Step 1");
 		List<Marker> retval = new ArrayList<> ();
 		
+		int color = 0;
+		float radius = 0;
+		
 		for (PointFeature feature : earthquakes) {
 			SimplePointMarker marker = this.createMarker(feature);
-			marker.setRadius(10);
-			System.out.println("Step 2");
+			
+			
+		    	System.out.println(feature.getProperties());
+		    	Object magObj = feature.getProperty("magnitude");
+		    	float mag = Float.parseFloat(magObj.toString());
+		    	// PointFeatures also have a getLocation method
+		    	
+		    	color = color(255,0,0);
+	    		radius = 12;
+	    		System.out.println("RED");
+		    	
+		    	if (mag < THRESHOLD_MODERATE) {
+		    		color = color(255,255,0);
+		    		radius = 9;
+		    		System.out.println("Yellow");
+		    	}
+		    	if (mag < THRESHOLD_LIGHT) {
+		    		color = color(0,0,255);
+		    		radius = 5;
+		    		System.out.println("Blue");
+		    	}
+		    	
+			marker.setRadius(radius);
+			marker.setColor(color);
+			
 			retval.add(marker);
 		}
 		return retval;
@@ -124,12 +152,38 @@ public class EarthquakeCityMap extends PApplet {
 	    addKey();
 	}
 
-
 	// helper method to draw key in GUI
 	// TODO: Implement this method to draw the key
 	private void addKey() 
 	{	
+		float ellipseVert = 100; 
 		// Remember you can use Processing's graphics methods here
-	
+		fill(color(255,255,255));
+		rect(25, 50, 150, 250);
+		
+		fill(color(0,0,0));
+		textSize(12);
+		text("Earthquake Key", 50, 65, 150, 20);
+		
+		fill(color(255,0,0));
+		ellipse(50, ellipseVert, 12, 12);
+		
+		fill(color(0,0,0));
+		textSize(12);
+		text("5.0+ Magnitude", 70, ellipseVert-5, 150, 20);
+		
+		fill(color(255,255,0));
+		ellipse(50, ellipseVert+50, 9, 9);
+		
+		fill(color(0,0,0));
+		textSize(12);
+		text("4.0+ Magnitude", 70, ellipseVert+50-3.5f, 150, 20);
+		
+		fill(color(0,0,255));
+		ellipse(50, ellipseVert+100, 5, 5);
+		
+		fill(color(0,0,0));
+		textSize(12);
+		text("Below 4.0", 70, ellipseVert+100-1.5f, 150, 20);
 	}
 }
