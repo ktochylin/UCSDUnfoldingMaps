@@ -12,11 +12,16 @@ public class TestInheritance {
 		Faculty f = new Faculty();
 		Object o = new Faculty();
 		
+		
+		
 		String n = s.getName();
 		p = s;
-		int m = p.getID();
-		f = q;
+		//int m = p.getID();
+		//f = q;
 		o = s;
+		
+		((Student)q).getID();
+		
 	}
 	
 }
