@@ -2,6 +2,9 @@ package module4;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.HashMap;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.data.Feature;
@@ -59,6 +62,9 @@ public class EarthquakeCityMap extends PApplet {
 
 	// A List of country markers
 	private List<Marker> countryMarkers;
+	
+	// Map to keep countries
+	private Map<String, Float> quakesByCountry;
 	
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
@@ -184,7 +190,27 @@ public class EarthquakeCityMap extends PApplet {
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() 
 	{
+		int ok = 0;
+		String countryName;
+		quakesByCountry = new HashMap<String, Float>();
+		
 		// TODO: Implement this method
+		for (Marker marker: quakeMarkers) {
+			if (marker instanceof LandQuakeMarker) {
+				countryName = ((LandQuakeMarker) marker).getCountry();
+				//if(quakesByCountry.containsKey(countryName)){
+				if(quakesByCountry.containsKey(countryName)){
+					quakesByCountry.put(countryName, quakesByCountry.get(countryName) + 1f);
+				} else {
+					quakesByCountry.put(countryName, 1f);
+				}
+			} else {
+				quakesByCountry.put("OCEAN QUAKE ", (float) ++ok);
+			}
+		}
+		for (Entry<String, Float> e: quakesByCountry.entrySet()) {
+			System.out.println(e.getKey() + " " + e.getValue().intValue());
+		}
 	}
 	
 	
