@@ -166,6 +166,12 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// TODO: Implement this method using the helper method isInCountry
 		
+		// inside some country
+		for (Marker marker: countryMarkers) {
+			if (this.isInCountry(earthquake, marker)){
+				return true;
+			}
+		}
 		// not inside any country
 		return false;
 	}
