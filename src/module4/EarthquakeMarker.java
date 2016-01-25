@@ -64,7 +64,12 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 		// call abstract method implemented in child class to draw marker shape
 		drawEarthquake(pg, x, y);
 		
-		// OPTIONAL TODO: draw X over marker if within past day		
+		// OPTIONAL TODO: draw X over marker if within past day	
+		if (this.getProperty("age").equals(new String("Past Day"))) {
+			pg.fill(0, 0, 0);
+			pg.line(x-this.radius, y+this.radius, x+this.radius, y-this.radius);
+			pg.line(x-this.radius, y-this.radius, x+this.radius, y+this.radius);
+		}
 		
 		// reset to previous styling
 		pg.popStyle();
@@ -77,6 +82,14 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 	// You might find the getters below helpful.
 	private void colorDetermine(PGraphics pg) {
 		//TODO: Implement this method
+		// Shallow
+		pg.fill(255, 255, 0);
+		if (this.getDepth() >= THRESHOLD_INTERMEDIATE) {
+			pg.fill(0, 0, 255);
+		}
+		if (this.getDepth() >= THRESHOLD_DEEP) {
+			pg.fill(255, 0, 0);
+		}
 	}
 	
 	
