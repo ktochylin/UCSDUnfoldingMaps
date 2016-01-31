@@ -69,6 +69,9 @@ public class EarthquakeCityMap extends PApplet {
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
 		size(900, 700, OPENGL);
+		
+		background(0);
+		
 		if (offline) {
 		    map = new UnfoldingMap(this, 200, 50, 650, 600, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom";  // The same feed, but saved August 7, 2015
@@ -86,7 +89,7 @@ public class EarthquakeCityMap extends PApplet {
 		//earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
-		//earthquakesURL = "quiz1.atom";
+		earthquakesURL = "quiz1.atom";
 		
 		
 		// (2) Reading in earthquake data and geometric properties
@@ -129,9 +132,18 @@ public class EarthquakeCityMap extends PApplet {
 	
 	
 	public void draw() {
-		background(0);
+		//background(0);
 		map.draw();
+		drawButtons();
 		addKey();
+		
+	}
+	
+	public void keyPressed() {
+		switch(key) {
+			case 'w': background(255, 255, 255); break;
+			case 'b': background(0); break;
+		}
 		
 	}
 	
@@ -160,6 +172,9 @@ public class EarthquakeCityMap extends PApplet {
 		ellipse(50, 205, 10, 10);
 		fill(color(255, 0, 0));
 		ellipse(50, 225, 10, 10);
+		fill(color(0, 0, 0));
+		line(45, 250, 55, 240);
+		line(45, 240, 55, 250);
 		
 		fill(0, 0, 0);
 		text("City Marker", 75, 105);
@@ -169,6 +184,7 @@ public class EarthquakeCityMap extends PApplet {
 		text("Shallow", 75, 185);
 		text("Intermediate", 75, 205);
 		text("Deep", 75, 225);
+		text("Past Day", 75, 245);
 	}
 
 	
@@ -259,5 +275,22 @@ public class EarthquakeCityMap extends PApplet {
 		}
 		return false;
 	}
-
+	
+	private void drawButtons() {
+		fill(255, 255, 255);
+		rect(250, 100, 25, 25);
+		fill(100, 100, 100);
+		rect(250, 150, 25, 25);
+	}
+	
+	public void mouseReleased() {
+		if(mouseX > 250 && mouseX < 275 && mouseY > 100 && mouseY < 125) {
+			background(255, 255, 255);
+			map.zoomIn();
+		} else if (mouseX > 250 && mouseX < 275 && mouseY > 150 && mouseY < 175) {
+			background(100, 100, 100);
+			map.zoomOut();
+		}
+	}
+	
 }
