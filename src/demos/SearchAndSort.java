@@ -124,7 +124,20 @@ public class SearchAndSort {
 		    }
 		  }
 		}
-
+	
+	public static void showAirports(ArrayList<Airport> airports) {
+		
+		for(Airport airport: airports) {
+			System.out.println(
+				airport.getCode3() + " " +
+				airport.getCode4() + " " +
+				airport.getAirportID() + " " +
+				airport.getName() + " " +
+				airport.getCity() + " " +
+				airport.getCountry()
+			);
+		}
+	}
 	
 	public static void main(String[] args) throws IOException
 	{
@@ -152,6 +165,8 @@ public class SearchAndSort {
 			System.out.print(vals[i] + " ");
 		}
 		
-		
-	}
+		showAirports(airports);
+	
+	} 
+	
 }
