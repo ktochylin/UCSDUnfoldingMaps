@@ -137,6 +137,7 @@ public class EarthquakeCityMap extends PApplet {
 		}
 		selectMarkerIfHover(quakeMarkers);
 		selectMarkerIfHover(cityMarkers);
+		//System.out.println("Movement"+map.getHeight()+" "+map.getWidth());
 	}
 	
 	// If there is a marker under the cursor, and lastSelected is null 
@@ -146,6 +147,15 @@ public class EarthquakeCityMap extends PApplet {
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		// TODO: Implement this method
+		for(Marker marker : markers) {
+			if(((CommonMarker) marker).isInside(map, mouseX, mouseY)){
+				if(lastSelected == null) {
+					lastSelected = (CommonMarker) marker;
+				}
+				lastSelected.setSelected(true);
+				return;
+			}
+		}
 	}
 	
 	/** The event handler for mouse clicks
@@ -159,8 +169,71 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		
+		// clear the last selection
+		if (lastClicked != null) {
+			lastClicked.setClicked(false);
+			lastClicked = null;
+		}
+		setMarkerClicked(quakeMarkers);
+		setMarkerClicked(cityMarkers);
+		
+		if (lastClicked == null) {
+			unhideMarkers();
+		}
+		
+		getAffectedCityes(quakeMarkers);
+		getAffectedQuakes(cityMarkers);
+		
 	}
 	
+	private void setMarkerClicked(List<Marker> markers)
+	{
+		// TODO: Implement this method
+		for(Marker marker : markers) {
+			if(!marker.isHidden() 
+					&& ((CommonMarker) marker).isInside(map, mouseX, mouseY)){
+				lastClicked = (CommonMarker) marker;
+				lastClicked.setClicked(true);
+				//return;
+			} else {
+				marker.setHidden(true);
+			}
+		}
+	}
+	
+	private void getAffectedCityes(List<Marker> markers) {
+		// TODO Auto-generated method stub
+		
+		if(lastClicked != null && lastClicked instanceof CityMarker) {
+			System.out.println("Clicked" + lastClicked.getProperty("name"));
+			
+			for(Marker marker : markers) {
+				//System.out.println("Distance to EQ"+ lastClicked.getDistanceTo(marker.getLocation()));
+				//System.out.println("EQ threat "+((EarthquakeMarker) marker).threatCircle());
+				if(((EarthquakeMarker) marker).threatCircle() >= lastClicked.getDistanceTo(marker.getLocation())){
+					marker.setHidden(false);
+				}
+			}
+		}
+	}
+
+
+	private void getAffectedQuakes(List<Marker> markers) {
+		// TODO Auto-generated method stub
+		
+		if(lastClicked != null && lastClicked instanceof EarthquakeMarker) {
+			System.out.println("Clicked" + lastClicked.getProperty("name"));
+			
+			for(Marker marker : markers) {
+				//System.out.println("Distance to EQ"+ lastClicked.getDistanceTo(marker.getLocation()));
+				//System.out.println("EQ threat "+((EarthquakeMarker) marker).threatCircle());
+				if(((EarthquakeMarker) lastClicked).threatCircle() >= marker.getDistanceTo(lastClicked.getLocation())){
+					marker.setHidden(false);
+				}
+			}
+		}
+	}
 	
 	// loop over and unhide all markers
 	private void unhideMarkers() {
