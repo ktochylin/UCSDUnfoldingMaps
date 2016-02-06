@@ -5,6 +5,7 @@ import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import processing.core.PConstants;
+import processing.core.PFont;
 import processing.core.PGraphics;
 
 /** Implements a visual marker for cities on an earthquake map
@@ -55,12 +56,24 @@ public class CityMarker extends CommonMarker {
 		// Save previous drawing style
 		pg.pushStyle();
 		
+<<<<<<< HEAD
 		// IMPLEMENT: drawing text
 		String title = this.getStringProperty("name") + ", " + this.getStringProperty("country") + ", " + this.getStringProperty("population");
 		pg.fill(255, 255, 0);
 		pg.rect(x, y, title.length()*6.3f, 15);
 		pg.fill(0, 0, 0);
 		pg.text(title, x, y+12);
+=======
+		// IMPLEMENT: drawing triangle for each city
+		pg.fill(255, 255, 0);
+		String text = this.getCity() + ", " + this.getCountry() + ", " + this.getPopulation();
+		pg.rect(x, y, 10, text.length()*6.3f);
+		//PFont mono;
+		//mono = loadFont("andalemo.ttf", 32);
+		//pg.textFont(mono);
+		pg.fill(0, 0, 0);
+		pg.text(text, x, y);
+>>>>>>> 994bd0098d02edc57c70caf6ad3ca055b3775229
 		
 		// Restore previous drawing style
 		pg.popStyle();
