@@ -1,9 +1,5 @@
 package module6;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.data.Feature;
 import de.fhpotsdam.unfolding.data.GeoJSONReader;
@@ -17,6 +13,9 @@ import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 import parsing.ParseFeed;
 import processing.core.PApplet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
@@ -82,7 +81,7 @@ public class EarthquakeCityMap extends PApplet {
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
 		//earthquakesURL = "test1.atom";
-		//earthquakesURL = "test2.atom";
+		earthquakesURL = "test2.atom";
 		
 		// Uncomment this line to take the quiz
 		//earthquakesURL = "quiz2.atom";
@@ -123,7 +122,8 @@ public class EarthquakeCityMap extends PApplet {
 	    //           for their geometric properties
 	    map.addMarkers(quakeMarkers);
 	    map.addMarkers(cityMarkers);
-	    
+		// Descending
+		sortAndPrint(6);
 	    
 	}  // End setup
 	
@@ -137,9 +137,73 @@ public class EarthquakeCityMap extends PApplet {
 	
 	
 	// TODO: Add the method:
-	//   private void sortAndPrint(int numToPrint)
 	// and then call that method from setUp
-	
+	   private void sortAndPrint(int numToPrint) {
+           Object[] quakesArray = quakeMarkers.toArray();
+
+           selectionSort(quakesArray);
+
+           showAllQuakes(quakesArray, numToPrint);
+
+           insertionSort(quakesArray);
+
+           showAllQuakes(quakesArray, numToPrint);
+
+	   }
+
+    private void insertionSort(Object[] quakesArray) {
+        System.out.println("Insertion sort START");
+        System.out.println("Count of quakes " + quakesArray.length);
+        long StartTime = System.nanoTime();
+        //Insertion sort
+        for(int i=1; i<quakesArray.length; i++){
+            for(int j=i; j>0; j--){
+                if(((EarthquakeMarker) quakesArray[j]).compareTo((EarthquakeMarker) quakesArray[j-1]) == 1) {
+                    Object temp = quakesArray[j];
+                    quakesArray[j] = quakesArray[j-1];
+                    quakesArray[j-1] = temp;
+                }
+            }
+        }
+
+        System.out.println("Elapsed " + ((System.nanoTime() - StartTime)/1000000));
+        System.out.println("Insertion sort END");
+    }
+
+    private void selectionSort(Object[] quakesArray) {
+        System.out.println("Selection sort START");
+        System.out.println("Count of quakes " + quakesArray.length);
+        long StartTime = System.nanoTime();
+        // Selection sort
+        for(int i=0; i<quakesArray.length; i++) {
+            int maxi = i;
+            for(int j=i+1; j<quakesArray.length; j++){
+                if(((EarthquakeMarker) quakesArray[j]).compareTo((EarthquakeMarker) quakesArray[maxi]) == 1)
+                    maxi = j;
+            }
+            Object temp = quakesArray[maxi];
+            quakesArray[maxi] = quakesArray[i];
+            quakesArray[i] = temp;
+            //System.out.println(i);
+        }
+        System.out.println("Elapsed " + ((System.nanoTime() - StartTime)/1000000));
+        System.out.println("Selection sort END");
+    }
+
+    private void showAllQuakes(Object[] quakesArray, int numToPrint){
+            for(int i =0; i<quakesArray.length && i<numToPrint; i++) {
+                showQuakeTitle(((EarthquakeMarker)quakesArray[i]));
+            }
+        }
+
+       private void showQuakeTitle(EarthquakeMarker marker) {
+           System.out.println(
+                   //em.getMagnitude() + " " +
+                   //em.getRadius() + " " +
+                   //em.getDepth() + " " +
+                   marker.getTitle()
+           );
+       }
 	/** Event handler that gets called automatically when the 
 	 * mouse moves.
 	 */

@@ -4,13 +4,15 @@ import de.fhpotsdam.unfolding.data.PointFeature;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 
+import java.util.Comparator;
+
 /** Implements a visual marker for earthquakes on an earthquake map
  * 
  * @author UC San Diego Intermediate Software Development MOOC team
  *
  */
 // TODO: Implement the comparable interface
-public abstract class EarthquakeMarker extends CommonMarker
+public abstract class EarthquakeMarker extends CommonMarker implements Comparable<EarthquakeMarker>
 {
 	
 	// Did the earthquake occur on land?  This will be set by the subclasses.
@@ -56,7 +58,18 @@ public abstract class EarthquakeMarker extends CommonMarker
 	}
 	
 	// TODO: Add the method:
-	// public int compareTo(EarthquakeMarker marker)
+	public int compareTo(EarthquakeMarker marker) {
+
+        if(this.getMagnitude() > marker.getMagnitude()){
+            return 1;
+        } else if(this.getMagnitude() > marker.getMagnitude()){
+            return -1;
+        } else if (this.getMagnitude() == marker.getMagnitude()) {
+            return 0;
+        } else {
+            return -123;
+        }
+	}
 	
 	
 	// calls abstract method drawEarthquake and then checks age and draws X if needed
